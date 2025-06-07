@@ -129,7 +129,7 @@ int main(int argc, char *argv[]) {
         float expected_result = input1 * input2;
         float actual_result = ((float *)output_data)[i];
 
-        printf("Index %4" PRIu64 ": %5.2f * %5.2f | Expected %8.2f | Got %8.2f | ",
+        printf("Index %4" PRIu64 ": %6.2f * %6.2f | Expected %8.2f | Got %8.2f | ",
                i, input1, input2, expected_result, actual_result);
 
         if (fabs(expected_result - actual_result) > tolerance) {
