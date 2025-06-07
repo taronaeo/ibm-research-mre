@@ -23,9 +23,7 @@
  */
 
 /*
- * This file is a template for vector extensions (VXE) implementation.
- * It includes definitions for vector types and operations for both s390x and ARM NEON architectures.
- * The code is designed to be compiled with GCC or Clang.
+ * This file is a template for zDNN (z/Architecture Deep Neural Network) implementation.
  *
  * Build binary using GCC
  * `gcc -O3 -march=z16 -mvx -mzvector -lzdnn -I/opt/zdnn-libs/include -L/opt/zdnn-libs/lib zdnn_template.c -o zdnn`
