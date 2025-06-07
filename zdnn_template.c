@@ -54,9 +54,9 @@ int main(int argc, char *argv[]) {
     zdnn_ztensor z_input1_tensor, z_input2_tensor, z_output_tensor;
     zdnn_status status;
 
-    printf("%s: Is zDNN NNPA installed? %d\n", __LINE__, zdnn_is_nnpa_installed());
-    printf("%s: Number of elements in any dimension must not exceed: %d\n", __LINE__, zdnn_get_nnpa_max_dim_idx_size());
-    printf("%s: Total number of bytes required for storing a transformed tensor must not exceed: %" PRIu64 "\n", __LINE__, zdnn_get_nnpa_max_tensor_size());
+    printf("%s: Is zDNN NNPA installed? %d\n", __func__, zdnn_is_nnpa_installed());
+    printf("%s: Number of elements in any dimension must not exceed: %d\n", __func__, zdnn_get_nnpa_max_dim_idx_size());
+    printf("%s: Total number of bytes required for storing a transformed tensor must not exceed: %" PRIu64 "\n", __func__, zdnn_get_nnpa_max_tensor_size());
 
     // Step 1: Specify NCHW dimensions and data type
     uint32_t input1_dim_n = 1, input1_dim_c = 1, input1_dim_h = 1, input1_dim_w = 2048;
@@ -77,12 +77,12 @@ int main(int argc, char *argv[]) {
     void * input2_data = malloc(input2_buffer_size);
     void * output_data = malloc(output_buffer_size);
 
-    printf("%s: initialising input data...\n", __LINE__);
+    printf("%s: initialising input data...\n", __func__);
     // Step 3: Correlate the `(float *)` against your chosen data type
     for (uint64_t i = 0; i < input1_num_elements; i++) ((float *)input1_data)[i] = (float)(i & 0x7f) + 1.0f;
     for (uint64_t i = 0; i < input2_num_elements; i++) ((float *)input2_data)[i] = (float)(i & 0x7f) + 2.0f;
-    printf("%s: initialised input1_data length: %zu\n", __LINE__, input1_num_elements);
-    printf("%s: initialised input2_data length: %zu\n", __LINE__, input2_num_elements);
+    printf("%s: initialised input1_data length: %zu\n", __func__, input1_num_elements);
+    printf("%s: initialised input2_data length: %zu\n", __func__, input2_num_elements);
 
     zdnn_init_pre_transformed_desc(ZDNN_NCHW,
                                    type,
@@ -105,19 +105,19 @@ int main(int argc, char *argv[]) {
     status = zdnn_init_ztensor_with_malloc(&input2_pre_tfm_desc, &input2_tfm_desc, &z_input2_tensor); assert(status == ZDNN_OK);
     status = zdnn_init_ztensor_with_malloc(&output_pre_tfm_desc, &output_tfm_desc, &z_output_tensor); assert(status == ZDNN_OK);
 
-    printf("%s: transforming input tensors into ztensor...\n", __LINE__);
+    printf("%s: transforming input tensors into ztensor...\n", __func__);
     status = zdnn_transform_ztensor(&z_input1_tensor, input1_data); assert(status == ZDNN_OK);
     status = zdnn_transform_ztensor(&z_input2_tensor, input2_data); assert(status == ZDNN_OK);
 
-    printf("%s: performing zdnn_mul ops...\n", __LINE__);
+    printf("%s: performing zdnn_mul ops...\n", __func__);
     status = zdnn_mul(&z_input1_tensor, &z_input2_tensor, &z_output_tensor);
     assert(status == ZDNN_OK);
-    printf("%s: zdnn_mul operation completed successfully.\n", __LINE__);
+    printf("%s: zdnn_mul operation completed successfully.\n", __func__);
 
-    printf("%s: transforming result ztensor back to original format...\n", __LINE__);
+    printf("%s: transforming result ztensor back to original format...\n", __func__);
     status = zdnn_transform_origtensor(&z_output_tensor, output_data);
     assert(status == ZDNN_OK);
-    printf("%s: transformed ztensor back to original format successfully.\n", __LINE__);
+    printf("%s: transformed ztensor back to original format successfully.\n", __func__);
 
     printf("--- verifying results ---\n");
     int failed_tests = 0;
